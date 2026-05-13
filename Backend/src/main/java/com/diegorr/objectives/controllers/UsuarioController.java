@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UsuarioController {
 
     @Autowired
@@ -19,7 +20,7 @@ public class UsuarioController {
     // Crear un nuevo usuario
     @PostMapping
     public ResponseEntity<?> crearUsuario(@Valid @RequestBody Usuario usuario) {
-        if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+        if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {
             return ResponseEntity.badRequest().body("Error: El email ya está en uso.");
         }
         Usuario nuevoUsuario = usuarioRepository.save(usuario);
@@ -48,5 +49,19 @@ public class UsuarioController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    // Método para Loguearse (Validación de acceso)
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Usuario loginData) {
+        return usuarioRepository.findByCorreo(loginData.getCorreo())
+                .map(usuario -> {
+                    // Por ahora validación simple (luego usaremos BCrypt para seguridad)
+                    if (usuario.getContrasenna().equals(loginData.getContrasenna())) {
+                        return ResponseEntity.ok(usuario); // Acceso concedido
+                    }
+                    return ResponseEntity.status(401).body("ACCESS_DENIED: Password incorrecto");
+                })
+                .orElse(ResponseEntity.status(404).body("USER_NOT_FOUND"));
     }
 }

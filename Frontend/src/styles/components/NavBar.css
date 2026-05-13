@@ -1,0 +1,46 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  height: 70px;
+  background: rgba(10, 10, 15, 0.9);
+  border-bottom: 2px solid var(--neon-cyan);
+  box-shadow: 0 5px 15px rgba(0, 243, 255, 0.1);
+  z-index: 100;
+}
+
+.logo-text {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 3px;
+  color: var(--neon-cyan);
+  font-weight: bold;
+}
+
+.nav-item {
+  color: #aaa;
+  text-decoration: none;
+  margin: 0 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: 0.3s;
+  position: relative;
+}
+
+.nav-item:hover, .nav-item.active {
+  color: #fff;
+  text-shadow: 0 0 8px var(--neon-cyan);
+}
+
+/* Subrayado neón animado */
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -5px; left: 0;
+  width: 0; height: 2px;
+  background: var(--neon-cyan);
+  transition: 0.3s;
+}
+
+.nav-item:hover::after { width: 100%; }
+

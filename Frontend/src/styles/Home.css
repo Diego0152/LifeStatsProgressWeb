@@ -1,0 +1,70 @@
+.home-container {
+  padding: 20px;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Títulos con efecto tecnológico */
+.glitch-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+  margin-bottom: 30px;
+}
+
+/* Grid de tarjetas estilo HUD */
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 40px;
+}
+
+/* La tarjeta con efecto cristal que explicamos */
+.mission-card {
+  background: rgba(15, 15, 25, 0.7);
+  border: 1px solid rgba(0, 243, 255, 0.2);
+  padding: 25px;
+  border-radius: 4px;
+  backdrop-filter: blur(10px);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.mission-card:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
+  transform: translateY(-5px);
+}
+
+.card-tag {
+  font-size: 0.7rem;
+  color: var(--neon-green);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+/* Botón Gamer */
+.btn-action {
+  background: transparent;
+  border: 1px solid var(--neon-green);
+  color: var(--neon-green);
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: bold;
+  transition: 0.3s;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.btn-action:hover {
+  background: var(--neon-green);
+  color: #000;
+  box-shadow: 0 0 15px var(--neon-green);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,138 @@
+/* Contenedor principal del panel en el Navbar */
+.nav-user-panel {
+  display: flex;
+  align-items: center;
+  font-family: 'Orbitron', sans-serif; /* O una fuente tech/futurista */
+}
+
+/* --- ESTADO LOGUEADO --- */
+.logged-in-zone {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(0, 243, 255, 0.05);
+  padding: 5px 15px;
+  border-left: 3px solid var(--neon-cyan);
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+  transition: all 0.3s ease;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-rank {
+  font-size: 0.6rem;
+  color: var(--neon-green);
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px var(--neon-green);
+}
+
+.user-name {
+  font-size: 0.9rem;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.user-name:hover {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px var(--neon-cyan);
+}
+
+/* Avatar con efecto de pulso */
+.user-avatar {
+  width: 35px;
+  height: 35px;
+  background: var(--neon-cyan);
+  border: 2px solid #fff;
+  border-radius: 5px; /* Cuadrado con puntas redondeadas para look militar */
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 0 10px var(--neon-cyan);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.user-avatar:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 0 20px var(--neon-cyan);
+}
+
+/* --- ESTADO SIN LOGUEAR (BOTONES) --- */
+.auth-zone {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-auth {
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  text-decoration: none;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-auth.login {
+  color: var(--neon-cyan);
+  border: 1px solid var(--neon-cyan);
+}
+
+.btn-auth.register {
+  background: var(--neon-cyan);
+  color: #000;
+  border: 1px solid var(--neon-cyan);
+}
+
+.btn-auth:hover {
+  box-shadow: 0 0 15px var(--neon-cyan);
+  transform: translateY(-2px);
+}
+
+/* Animación de brillo que cruza el botón */
+.btn-auth::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: rotate(45deg);
+  transition: 0.5s;
+}
+
+.btn-auth:hover::after {
+  left: 100%;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 10px;
+  background: rgba(0, 10, 20, 0.95);
+  border: 1px solid var(--neon-cyan);
+  min-width: 180px;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+.profile-dropdown li {
+  padding: 12px;
+  border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--neon-cyan);
+}
+
+.profile-dropdown li:hover {
+  background: var(--neon-cyan);
+  color: #000;
+}

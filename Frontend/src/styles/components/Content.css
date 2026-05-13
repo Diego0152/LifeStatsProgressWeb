@@ -1,0 +1,47 @@
+.content-frame {
+  flex: 1;
+  position: relative;
+  margin: 20px;
+  padding: 40px;
+  background: rgba(20, 20, 30, 0.4); /* Un fondo oscuro muy suave */
+  border: 1px solid rgba(0, 243, 255, 0.1);
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Esquinas estilo HUD */
+.hud-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--neon-cyan);
+  border-style: solid;
+  pointer-events: none; /* Que no molesten al hacer clic */
+}
+
+.top-left { top: -2px; left: -2px; border-width: 3px 0 0 3px; }
+.top-right { top: -2px; right: -2px; border-width: 3px 3px 0 0; }
+.bottom-left { bottom: -2px; left: -2px; border-width: 0 0 3px 3px; }
+.bottom-right { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; }
+
+.inner-content {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Un sutil escaneo de líneas que cruza el contenido */
+.content-frame::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 243, 255, 0.02) 3px,
+    transparent 4px
+  );
+  pointer-events: none;
+}
