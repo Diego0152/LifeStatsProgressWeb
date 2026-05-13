@@ -1,0 +1,5 @@
+# Ignorar archivos de datos de la base de datos
+Database/data/
+*.sock
+*.index
+*.cnf
