@@ -1,0 +1,174 @@
+.error-screen {
+  height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle, #1a0505 0%, #0a0a0f 100%);
+  display: flex;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center;     /* Centrado vertical */
+  position: relative;
+  overflow: hidden;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;      /* Centra los textos internos */
+}
+
+.error-content-wrapper {
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* El texto 404 con Glitch */
+.glitch-text {
+  font-size: 8rem;
+  font-weight: 900;
+  position: relative;
+  color: #fff;
+  text-shadow: 0.05em 0 0 #ff003c, -0.025em -0.05em 0 #00f3ff,
+               0.025em 0.05em 0 #ff003c;
+  animation: glitch 500ms infinite;
+}
+
+.glitch-text::before, .glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0.8;
+}
+
+.glitch-text::before {
+  animation: glitch 650ms infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  transform: translate(-0.025em, -0.0125em);
+  color: #ff003c;
+}
+
+.glitch-text::after {
+  animation: glitch 375ms infinite;
+  clip-path: polygon(0 80%, 100% 20%, 100% 100%, 0 100%);
+  transform: translate(0.0125em, 0.025em);
+  color: #00f3ff;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-3px, 3px); }
+  40% { transform: translate(-3px, -3px); }
+  60% { transform: translate(3px, 3px); }
+  80% { transform: translate(3px, -3px); }
+  100% { transform: translate(0); }
+}
+
+/* Panel de Información */
+.error-info-panel {
+  margin-bottom: 25px;
+}
+
+.status-badge {
+  background: #ff003c;
+  color: #000;
+  font-size: 0.7rem;
+  padding: 2px 10px;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.error-msg {
+  font-size: 1.5rem;
+  color: #ff003c;
+  letter-spacing: 2px;
+  margin: 5px 0;
+}
+
+.error-sub {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 400px;
+}
+
+/* Ventana de Terminal */
+.terminal-window {
+  width: clamp(300px, 80vw, 500px);
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 0, 60, 0.3);
+  backdrop-filter: blur(5px);
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.terminal-header {
+  background: rgba(255, 0, 60, 0.1);
+  padding: 8px 15px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 0, 60, 0.3);
+}
+
+.dots { display: flex; gap: 6px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #333; }
+.terminal-id { font-size: 0.6rem; color: #ff003c; opacity: 0.7; }
+
+.terminal-content {
+  padding: 15px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.t-fail { color: #ff003c; font-weight: bold; }
+.t-blink { animation: blink-text 0.8s infinite; color: #ff003c; }
+
+/* Botón Centrado con Hover de Energía */
+.btn-reboot-system {
+  background: transparent;
+  border: 1px solid #ff003c;
+  color: #ff003c;
+  padding: 15px 40px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-reboot-system:hover {
+  background: #ff003c;
+  color: #000;
+  box-shadow: 0 0 30px rgba(255, 0, 60, 0.6);
+}
+
+/* Animaciones de Error */
+@keyframes glitch-anim {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes blink-text {
+  50% { opacity: 0; }
+}
+
+/* Línea de escaneo vertical */
+.scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 0, 60, 0.1);
+  opacity: 0.5;
+  animation: scanning 4s linear infinite;
+}
+
+@keyframes scanning {
+  0% { top: 0; }
+  100% { top: 100%; }
+}

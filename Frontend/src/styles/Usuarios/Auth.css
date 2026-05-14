@@ -11,7 +11,7 @@
   border: 1px solid var(--neon-cyan);
   padding: 40px;
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
   position: relative;
   box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
 }
@@ -102,7 +102,7 @@
   background: rgba(255, 0, 85, 0.15);
   border: 1px solid #ff0055;
   padding: 12px;
-  margin: 0 0 20px 0;
+  margin: 15px 0 15px 0;
   display: flex;
   align-items: center;
   gap: 10px;

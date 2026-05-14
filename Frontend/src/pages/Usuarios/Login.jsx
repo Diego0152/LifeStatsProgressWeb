@@ -4,15 +4,14 @@ import { useAuth } from '../../data/AuthContext.jsx';
 import '../../styles/Usuarios/Auth.css';
 
 const Login = () => {
-  const [inputs, setInputs] = useState({ nombre: '', contrasenna: '' });
-  // Nuevo estado para el mensaje de error
+  // Asegúrate de que los nombres coincidan exactamente con el "name" de los inputs
+  const [inputs, setInputs] = useState({ identificador: '', contrasenna: '' });
   const [errorMsg, setErrorMsg] = useState(""); 
   
   const { loginAction } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    // Si el usuario escribe, borramos el mensaje de error para limpiar la interfaz
     if (errorMsg) setErrorMsg(""); 
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
@@ -20,11 +19,12 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      // Enviamos el objeto 'inputs' al loginAction
       await loginAction(inputs);
-      navigate('/profile');
+      // Si el login es exitoso, navegamos al Home (donde se hará el check de metas)
+      navigate('/'); 
     } catch (error) {
       console.error('Login failed:', error);
-      // En lugar de alert, actualizamos nuestro estado
       setErrorMsg("ACCESO_DENEGADO: Credenciales de agente no reconocidas.");
     }
   };
@@ -38,7 +38,6 @@ const Login = () => {
           <p>Sincroniza tu identidad con el núcleo del sistema.</p>
         </div>
 
-        {/* --- MENSAJE DE ERROR ESTILO TERMINAL --- */}
         {errorMsg && (
           <div className="system-alert-box">
             <span className="alert-icon">⚡</span>
@@ -51,11 +50,10 @@ const Login = () => {
             <label>NOMBRE DE USUARIO O EMAIL</label>
             <input 
               type="text" 
-              name="nombre" 
-              placeholder="Username o Email..." 
-              value={inputs.nomnbre} 
+              name="identificador" 
+              value={inputs.identificador} 
               onChange={handleChange} 
-              required
+              required 
             />
           </div>
 
@@ -71,7 +69,7 @@ const Login = () => {
             />
           </div>
           
-          <button type="submit" className="btn-glow">INICIAR SESIÓN</button>
+          <button type="submit" className="btn-glow">ACCEDER AL NÚCLEO</button>
         </form>
 
         <div className="auth-footer">

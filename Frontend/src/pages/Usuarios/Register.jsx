@@ -13,7 +13,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8088/api/usuarios", {
+      const response = await fetch("http://localhost:8088/api/usuarios/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(inputs) // Enviamos el objeto con nombre, email y password

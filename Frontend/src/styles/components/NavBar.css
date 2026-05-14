@@ -4,43 +4,356 @@
   align-items: center;
   padding: 0 40px;
   height: 70px;
-  background: rgba(10, 10, 15, 0.9);
+  /* Fondo con efecto cristal y líneas de escaneo */
+  background: linear-gradient(
+      rgba(10, 10, 15, 0.95), 
+      rgba(10, 10, 15, 0.95)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 243, 255, 0.03) 3px,
+      transparent 4px
+    );
   border-bottom: 2px solid var(--neon-cyan);
-  box-shadow: 0 5px 15px rgba(0, 243, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 243, 255, 0.15);
   z-index: 100;
+  backdrop-filter: blur(10px); /* Desenfoque de lo que hay detrás */
+  position: sticky;
+  top: 0;
 }
 
-.logo-text {
-  font-family: 'Orbitron', sans-serif;
-  letter-spacing: 3px;
-  color: var(--neon-cyan);
-  font-weight: bold;
+/* Decoración de esquinas para la Navbar */
+.navbar::before, .navbar::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  width: 15px;
+  height: 8px;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan);
+}
+.navbar::before { left: 0; clip-path: polygon(0 0, 100% 100%, 0 100%); }
+.navbar::after { right: 0; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
 }
 
 .nav-item {
-  color: #aaa;
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  margin: 0 20px;
-  font-size: 0.9rem;
+  margin: 0 15px;
+  font-size: 0.85rem;
   font-weight: 700;
-  transition: 0.3s;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
+  padding: 5px 10px;
 }
-
+ /* Efecto de hover mejorado */
 .nav-item:hover, .nav-item.active {
-  color: #fff;
-  text-shadow: 0 0 8px var(--neon-cyan);
+  color: var(--neon-cyan);
+  text-shadow: 0 0 12px var(--neon-cyan);
+  transform: translateY(-2px);
 }
 
-/* Subrayado neón animado */
+/* El subrayado ahora es una barra de energía */
 .nav-item::after {
   content: '';
   position: absolute;
-  bottom: -5px; left: 0;
-  width: 0; height: 2px;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
   background: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan);
+  transition: 0.3s;
+  transform: translateX(-50%);
+}
+
+.nav-item:hover::after, .nav-item.active::after {
+  width: 80%;
+}
+
+/* Contenedor base (mantiene tu estilo de cristal) */
+.logged-in-container {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  padding: 5px 15px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.logged-in-container.online .user-rank {
+  color: var(--neon-green); /* O neon-cyan si prefieres */
+}
+
+.logged-in-container.offline .user-rank {
+  color: #ff4444;
+  text-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
+  animation: blink 1.5s infinite; /* Parpadeo de advertencia */
+}
+
+.logged-in-container.offline .user-name {
+  color: rgba(255, 255, 255, 0.5); /* Nombre más apagado si no hay nadie */
+}
+
+.dropdown-item.offline:hover {
+  background: #ff4444b7;
+  text-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
+}
+
+/* Ajuste del Dropdown cuando está Offline */
+.logged-in-container.offline .user-dropdown {
+  border-color: #ff4444;
+  box-shadow: 0 0 20px rgba(255, 68, 68, 0.2);
+}
+
+.logged-in-container.offline .dropdown-arrow {
+  border-left-color: #ff4444;
+  border-top-color: #ff4444;
+}
+
+/* Avatar fix */
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-avatar.offline {
+  filter: grayscale(100%) brightness(70%);
+  border: 1px solid #ff4444;
+  box-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
+}
+
+.avatar-status {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px; /* Cuadrado para look más técnico */
   transition: 0.3s;
 }
 
-.nav-item:hover::after { width: 100%; }
+@keyframes blink {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
 
+/* Luz que recorre el panel de usuario de vez en cuando */
+.logged-in-zone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  animation: shine 5s infinite;
+}
+
+/* Contenedor principal */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+/* El Icono: Triángulo dentro de un Anillo */
+.logo-icon-wrapper {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(0, 243, 255, 0.3);
+  border-top: 2px solid var(--neon-cyan); /* Solo una parte brilla */
+  border-radius: 50%;
+  animation: spin 4s linear infinite;
+}
+
+.logo-triangle {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 18px solid var(--neon-cyan);
+  filter: drop-shadow(0 0 5px var(--neon-cyan));
+}
+
+/* El texto con jerarquía */
+.logo-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-main-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.logo-sub-text {
+  font-size: 0.62rem;
+  color: var(--neon-cyan);
+  letter-spacing: 2px;
+  opacity: 0.5;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Animaciones */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.text-glitch {
+  animation: blink 1s steps(2) infinite;
+}
+
+
+@keyframes shine {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* El menú desplegable */
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 15px);
+  right: 0;
+  width: 200px;
+  background: rgba(10, 10, 15, 0.98);
+  border: 1px solid var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  /* Animación de aparición */
+  animation: slideDown 0.2s ease-out;
+}
+
+.dropdown-arrow {
+  position: absolute;
+  top: -6px;
+  right: 15px;
+  width: 10px;
+  height: 10px;
+  background: rgba(10, 10, 15, 0.98);
+  border-left: 1px solid var(--neon-cyan);
+  border-top: 1px solid var(--neon-cyan);
+  transform: rotate(45deg);
+}
+
+.dropdown-item {
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: rgba(0, 243, 255, 0.1);
+  color: var(--neon-cyan);
+  padding-left: 25px; /* Efecto de desplazamiento al pasar el ratón */
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: rgba(0, 243, 255, 0.2);
+  margin: 5px 0;
+}
+
+.dropdown-item.logout {
+  color: #ff4444; /* Rojo para advertencia */
+}
+
+.dropdown-item.logout:hover {
+  background: rgba(255, 68, 68, 0.1);
+  color: #ff6666;
+  text-shadow: 0 0 8px #ff4444;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.user-rank {
+  font-size: 0.65rem;
+  color: var(--neon-green);
+  font-family: 'Orbitron', sans-serif;
+  display: block;
+}
+
+.user-name {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: 0.3s;
+}
+
+.user-name:hover {
+  color: var(--neon-cyan);
+}
+
+/* La Y como punto de inflexión */
+.text-accent-y {
+  color: var(--neon-cyan);
+  position: relative;
+  text-shadow: 0 0 15px var(--neon-cyan);
+  display: inline-block;
+}
+
+/* Símbolo de crecimiento diagonal saliendo de la Y */
+.text-accent-y::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -8px;
+  width: 12px;
+  height: 2px;
+  background: var(--neon-cyan);
+  transform: rotate(-45deg); /* La diagonal hacia arriba */
+  box-shadow: 0 0 8px var(--neon-cyan);
+  animation: pulse-line 2s infinite;
+}
+
+@keyframes pulse-line {
+  0%, 100% { opacity: 0.5; transform: rotate(-45deg) scaleX(1); }
+  50% { opacity: 1; transform: rotate(-45deg) scaleX(1.3); }
+}

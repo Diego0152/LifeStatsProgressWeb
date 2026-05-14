@@ -25,3 +25,59 @@
   50% { opacity: 1; }
   100% { opacity: 0.4; }
 }
+
+/* Contenedor de métricas */
+.footer-metrics {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 5px;
+  align-items: center;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.65rem;
+}
+
+.metric-item .label {
+  color: rgba(0, 243, 255, 0.5); /* Color cyan suave */
+}
+
+.metric-item .value {
+  color: var(--neon-cyan);
+  font-weight: bold;
+}
+
+/* La barrita de progreso mini para la CPU */
+.progress-bar-mini {
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar-mini .fill {
+  height: 100%;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 5px var(--neon-cyan);
+  /* Animación para que la barra se mueva un poco sola */
+  animation: jitter 3s infinite ease-in-out; 
+}
+
+/* Animación de "nerviosismo" para la barra de carga */
+@keyframes jitter {
+  0%, 100% { width: 42%; }
+  30% { width: 45%; }
+  60% { width: 38%; }
+  80% { width: 43%; }
+}
+
+/* Estilo para el path del sistema */
+.system-path {
+  font-size: 0.6rem;
+  color: #555;
+  letter-spacing: 1px;
+}

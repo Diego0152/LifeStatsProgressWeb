@@ -5,12 +5,18 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "usuarios")
 @Data
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +41,14 @@ public class Usuario {
     private EstadoSalud estadoSalud;
 
     @Column(nullable = true)
+    private String fotoPerfil;
+
+    @Column(nullable = true)
     private Integer edad;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoUsuario tipoUsuario = TipoUsuario.USER; // Por defecto, todos son USER
 
     // Relación para poder ver las metas desde el usuario
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
@@ -43,4 +56,19 @@ public class Usuario {
 
     @Column(nullable = false)
     private Boolean activo = false;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() { return List.of(); }
+    
+    @Override
+    public String getPassword() { return this.contrasenna; }
+    
+    @Override
+    public String getUsername() { return this.nombre; }
+    
+    // Todos estos deben retornar true para que el login no de 401
+    @Override public boolean isAccountNonExpired() { return true; }
+    @Override public boolean isAccountNonLocked() { return true; }
+    @Override public boolean isCredentialsNonExpired() { return true; }
+    @Override public boolean isEnabled() { return true; }
 }
