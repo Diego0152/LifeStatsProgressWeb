@@ -1,0 +1,75 @@
+.age-scanner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px;
+  background: rgba(10, 10, 15, 0.8);
+  border: 1px solid var(--neon-cyan);
+  box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+  max-width: 600px;
+  margin: auto;
+  position: relative;
+}
+
+/* El cuadro donde sale el icono de bebé/adulto */
+.avatar-frame {
+  width: 150px;
+  height: 150px;
+  border: 2px solid var(--neon-cyan);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  position: relative;
+  background: rgba(0, 243, 255, 0.05);
+  clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+}
+
+.scanner-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 15px var(--neon-cyan);
+  animation: scan-vertical 2s infinite ease-in-out;
+}
+
+@keyframes scan-vertical {
+  0%, 100% { top: 0%; }
+  50% { top: 100%; }
+}
+
+/* Estilo del Slider personalizado */
+.age-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  outline: none;
+}
+
+.age-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--neon-cyan);
+  border: 2px solid #fff;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--neon-cyan);
+  transition: 0.2s;
+}
+
+.age-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.age-display {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  color: #fff;
+  text-shadow: 0 0 20px var(--neon-cyan);
+  margin-bottom: 10px;
+}

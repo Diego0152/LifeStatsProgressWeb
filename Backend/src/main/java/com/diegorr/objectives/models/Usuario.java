@@ -5,10 +5,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-
 import java.util.Collection;
 import java.util.List;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,9 +34,11 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private String nombre;
 
+    @ElementCollection(targetClass = EstadoSalud.class)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
-    private EstadoSalud estadoSalud;
+    @CollectionTable(name = "usuario_estados_salud", joinColumns = @JoinColumn(name = "usuario_id"))
+    @Column(name = "estado")
+    private List<EstadoSalud> estadoSalud;
 
     @Column(nullable = true)
     private String fotoPerfil;

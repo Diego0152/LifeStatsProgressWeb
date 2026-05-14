@@ -32,7 +32,7 @@ const NavBar = () => {
           INICIO
         </Link>
         {/* Solo mostramos "MIS METAS" si el usuario está logueado */} 
-        <Link to="/misiones" className={`nav-item ${location.pathname === '/metas' ? 'active' : ''}`}>
+        <Link to="/metas" className={`nav-item ${location.pathname === '/metas' ? 'active' : ''}`}>
           MIS METAS
         </Link>
       </div>
