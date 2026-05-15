@@ -1,53 +1,65 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AgeStep from '../../components/AgeStages.jsx';
-import HealthStep from '../../components/HealthStatus.jsx';
-import './Metas.css';
+import HealthStep from '../../components/HealthStep.jsx';
+import '../../styles/metas/Metas.css';
 
 const Metas = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   
-  // Estado para almacenar los datos del "escaneo" inicial
-  const [profileData, setProfileData] = useState({
-    age: null,
-    status: []
-  });
-
-  // Control de flujo por Hash
-  const currentHash = location.hash || '#edad';
-
-  const handleAgeComplete = (age) => {
-    setProfileData({ ...profileData, age });
-    navigate('#estado-salud');
-  };
-
-  const handleHealthComplete = (selectedStatus) => {
-    setProfileData({ ...profileData, status: selectedStatus });
-    // Aquí podrías hacer el POST al backend con JPA antes de navegar
-    navigate('/metas/objetivos');
-  };
+  // Este estado vendría de tu base de datos mediante un useEffect
+  const [metas, setMetas] = useState([]); 
 
   return (
-    <div className="metas-interface">
-      {/* Barra de progreso superior */}
-      <div className="setup-progress-bar">
-        <div className={`progress-segment ${currentHash === '#edad' ? 'active' : ''}`}>01_CHRONOS</div>
-        <div className={`progress-segment ${currentHash === '#estado-salud' ? 'active' : ''}`}>02_BIO_INTEGRITY</div>
-      </div>
+    <div className="metas-container">
+      {metas.length > 0 ? (
+        // CASO A: TIENE METAS
+        <div className="metas-dashboard">
+          <header className="dashboard-header">
+            <h2 className="glitch-text" data-text="MIS_DIRECTIVAS">MIS_DIRECTIVAS</h2>
+            <button className="btn-add-meta" onClick={() => navigate('#crear')}>
+              + NUEVO_OBJETIVO
+            </button>
+          </header>
+          <div className="metas-grid">
+            {metas.map(meta => <MetaCard key={meta.id} meta={meta} />)}
+          </div>
+        </div>
+      ) : (
+        // CASO B: PANTALLA EN GRANDE (EMPTY STATE)
+        <div className="empty-metas-screen">
+          <div className="warning-icon">⚠</div>
+          <h1 className="empty-title">¿AÚN NO TE HAS PROPUESTO NADA?</h1>
+          <p className="empty-subtitle">
+            EL SISTEMA ESTÁ EN MODO ESPERA. TU POTENCIAL ESTÁ SIENDO DESPERDICIADO.
+          </p>
+          <div className="scanline"></div>
+          
+          <button 
+            className="btn-huge-action" 
+            onClick={() => navigate('/nueva-meta#edad')}
+          >
+            ESTABLECER_PRIMERA_META
+          </button>
+          
+          <p className="motivational-code">
+            Error: No directives found in sectors 7-G. <br/>
+            Status: Awaiting human input...
+          </p>
+        </div>
+      )}
 
-      <main className="metas-content">
-        {currentHash === '#edad' && (
-          <AgeStep onNext={handleAgeComplete} />
-        )}
-        
-        {currentHash === '#estado-salud' && (
-          <HealthStep onNext={handleHealthComplete} />
-        )}
-      </main>
-
-      {/* Decoración de fondo estilo rejilla */}
-      <div className="grid-overlay"></div>
+      {/* Si el hash es #crear, mostramos el formulario sobrepuesto o en esta misma sección */}
+      {window.location.hash === '#crear' && (
+        <div className="modal-overlay">
+           {/* Aquí irá tu nuevo formulario de "Crear Meta" */}
+           <div className="create-meta-form">
+              <h2>CONFIGURAR_NUEVA_META</h2>
+              {/* Inputs para Título, Categoría, Fecha Límite... */}
+              <button onClick={() => navigate('/')}>CANCELAR</button>
+           </div>
+        </div>
+      )}
     </div>
   );
 };

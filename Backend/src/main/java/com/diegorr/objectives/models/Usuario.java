@@ -5,10 +5,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -37,14 +38,18 @@ public class Usuario implements UserDetails {
     @ElementCollection(targetClass = EstadoSalud.class)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "usuario_estados_salud", joinColumns = @JoinColumn(name = "usuario_id"))
-    @Column(name = "estado")
-    private List<EstadoSalud> estadoSalud;
+    @Column(name = "estado_salud")
+    private List<EstadoSalud> estadoSalud = new ArrayList<>();
 
     @Column(nullable = true)
     private String fotoPerfil;
 
     @Column(nullable = true)
     private Integer edad;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "etapa_vida")
+    private EstadoEdad etapaVida;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -71,4 +76,14 @@ public class Usuario implements UserDetails {
     @Override public boolean isAccountNonLocked() { return true; }
     @Override public boolean isCredentialsNonExpired() { return true; }
     @Override public boolean isEnabled() { return true; }
+
+    public void actualizarBiometria(int edad) {
+        this.edad = edad;
+        this.etapaVida = EstadoEdad.desdeEdad(edad);
+    }
+
+    public void actualizarEstadosSalud(List<EstadoSalud> nuevosEstados) {
+        this.estadoSalud.clear();
+        this.estadoSalud.addAll(nuevosEstados);
+    }
 }

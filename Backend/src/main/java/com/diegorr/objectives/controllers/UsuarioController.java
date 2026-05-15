@@ -1,8 +1,11 @@
 package com.diegorr.objectives.controllers;
 
+import com.diegorr.objectives.dto.BiometriaDTO;
 import com.diegorr.objectives.dto.LoginDTO;
 import com.diegorr.objectives.models.Usuario;
 import com.diegorr.objectives.repositories.UsuarioRepository;
+import com.diegorr.objectives.services.UsuarioService;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +31,9 @@ public class UsuarioController {
 
     @Autowired
     private AuthenticationManager authenticationManager; // El motor de login de Security
+
+    @Autowired
+    private UsuarioService usuarioService; // Para registrar biometría
 
     // --- REGISTRO CON ENCRIPTACIÓN ---
     @PostMapping("/register")
@@ -94,5 +100,20 @@ public class UsuarioController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{id}/biometria")
+    public ResponseEntity<?> updateBiometria(@PathVariable Long id, @RequestBody Map<String, Integer> body) {
+        usuarioService.registrarCronos(id, body.get("edad"));
+        return ResponseEntity.ok().body("{\"status\": \"SINCRO_OK\"}");
+    }
+
+    @PostMapping("/{id}/sincronizar-biometria")
+    public ResponseEntity<?> sincronizar(@PathVariable Long id, @RequestBody BiometriaDTO dto) {
+        usuarioService.actualizarPerfilBiometrico(id, dto);
+        return ResponseEntity.ok().body(Map.of(
+            "status", "SINCRO_COMPLETA",
+            "timestamp", System.currentTimeMillis()
+        ));
     }
 }

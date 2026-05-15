@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AgeStep from '../../components/AgeStages';
-import HealthStep from '../../components/HealthStatus';
-import '../../styles/components/MetasFlow.css';
+import HealthStep from '../../components/HealthStep';
+import '../../styles/metas/MetasFlow.css';
 
 
 const MetasFlow = () => {
@@ -13,9 +13,9 @@ const MetasFlow = () => {
   const renderStep = () => {
     switch (location.hash) {
       case '#edad':
-        return <AgeStep onNext={() => navigate('#estado-salud')} />;
+        return <AgeStep onNext={() => navigate('/nueva-meta#edad')} />;
       case '#estado-salud':
-        return <HealthStep onNext={() => navigate('/metas/objetivos')} />;
+        return <HealthStep onNext={() => navigate('/nueva-meta#estado-salud')} />;
       default:
         return <AgeStep />;
     }

@@ -1,0 +1,102 @@
+.health-step-container {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+}
+
+.category-group {
+  margin-bottom: 30px;
+}
+
+.category-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  color: var(--neon-cyan);
+  margin-bottom: 15px;
+  letter-spacing: 3px;
+  border-left: 2px solid var(--neon-cyan);
+  padding-left: 10px;
+}
+
+.chips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.status-chip {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  clip-path: polygon(0 0, 100% 0, 100% 75%, 85% 100%, 0 100%);
+}
+
+.status-chip:hover {
+  background: rgba(0, 243, 255, 0.05);
+  border-color: rgba(0, 243, 255, 0.4);
+}
+
+.status-chip.active {
+  background: rgba(0, 243, 255, 0.1);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+}
+
+.chip-label {
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  color: #fff;
+}
+
+.chip-desc {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--neon-cyan);
+  opacity: 0.6;
+}
+
+/* Feedback Box */
+.scan-feedback {
+  background: rgba(0, 243, 255, 0.05);
+  padding: 15px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 1px solid rgba(0, 243, 255, 0.2);
+}
+
+.scan-feedback.warning {
+  background: rgba(255, 0, 60, 0.1);
+  border-color: #ff003c;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--neon-cyan);
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.warning .pulse-dot {
+  background: #ff003c;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.feedback-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+}

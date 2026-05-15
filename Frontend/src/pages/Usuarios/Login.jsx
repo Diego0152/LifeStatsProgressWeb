@@ -33,7 +33,6 @@ const Login = () => {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
-          <span className="scanner-line"></span>
           <h2>INICIA SESIÓN</h2>
           <p>Sincroniza tu identidad con el núcleo del sistema.</p>
         </div>
