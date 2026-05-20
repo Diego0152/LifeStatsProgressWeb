@@ -84,13 +84,22 @@
   position: relative;
   cursor: pointer;
   user-select: none;
-  padding: 5px 15px;
-  border: 1px solid transparent;
-  transition: all 0.3s ease;
+  padding: 0 5px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.03);
+  gap: 15px;
+  background: transparent; /* Quitamos cualquier rastro de fondo o cambio en él */
+  border: none;
+}
+
+.logged-in-container:hover .user-name {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 12px var(--neon-cyan);
+}
+
+.logged-in-container:hover .user-rank {
+  color: var(--neon-green);
+  text-shadow: 0 0 10px var(--neon-green);
 }
 
 .logged-in-container.online .user-rank {
@@ -123,6 +132,11 @@
   border-top-color: #ff4444;
 }
 
+.logged-in-container.offline:hover .user-avatar {
+  border-color: #ff6666;
+  box-shadow: 0 0 12px rgba(255, 68, 68, 0.6);
+}
+
 /* Avatar fix */
 .user-avatar {
   width: 30px;
@@ -130,6 +144,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.logged-in-container:not(.offline):hover .user-avatar {
+  border: 1px solid var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.7);
+  /* scale(1.15) lo hace más grande, rotate(45deg) lo clava en diagonal */
+  transform: scale(1.08) rotate(12deg);
+  border: 1px solid white;
+  border-radius: 4px;
+}
+
+.logged-in-container.offline:hover .user-avatar {
+  border: 1px solid #ff4444;
+  box-shadow: 0 0 15px rgba(255, 68, 68, 0.9);
+  /* Mismo movimiento pero con la estética de error del sistema */
+  transform: scale(1.08) rotate(12deg);
+  border-radius: 4px;
 }
 
 .user-avatar.offline {
@@ -159,66 +193,6 @@
   width: 100%; height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
   animation: shine 5s infinite;
-}
-
-/* Contenedor principal */
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-}
-
-/* El Icono: Triángulo dentro de un Anillo */
-.logo-icon-wrapper {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.logo-ring {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border: 2px solid rgba(0, 243, 255, 0.3);
-  border-top: 2px solid var(--neon-cyan); /* Solo una parte brilla */
-  border-radius: 50%;
-  animation: spin 4s linear infinite;
-}
-
-.logo-triangle {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 18px solid var(--neon-cyan);
-  filter: drop-shadow(0 0 5px var(--neon-cyan));
-}
-
-/* El texto con jerarquía */
-.logo-text-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.logo-main-text {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: #fff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-}
-
-.logo-sub-text {
-  font-size: 0.62rem;
-  color: var(--neon-cyan);
-  letter-spacing: 2px;
-  opacity: 0.5;
-  font-family: 'Share Tech Mono', monospace;
 }
 
 /* Animaciones */
@@ -314,9 +288,10 @@
 
 .user-rank {
   font-size: 0.65rem;
-  color: var(--neon-green);
+  color: rgba(255, 255, 255, 0.4); /* Apagado por defecto para que el cambio impacte */
   font-family: 'Orbitron', sans-serif;
   display: block;
+  transition: all 0.3s ease;
 }
 
 .user-name {
@@ -324,14 +299,93 @@
   text-decoration: none;
   font-weight: 700;
   font-size: 0.9rem;
-  transition: 0.3s;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .user-name:hover {
   color: var(--neon-cyan);
 }
 
-/* La Y como punto de inflexión */
+/* Contenedor principal */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* El Icono: Triángulo dentro de un Anillo con Scanner */
+.logo-icon-wrapper {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Mantiene el láser dentro del rango del icono */
+  border-radius: 4px;
+}
+
+.logo-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(0, 243, 255, 0.15);
+  border-top: 2px solid var(--neon-cyan); 
+  border-radius: 50%;
+  animation: spin 4s linear infinite;
+  box-shadow: inset 0 0 4px rgba(0, 243, 255, 0.2);
+}
+
+.logo-triangle {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 18px solid var(--neon-cyan);
+  filter: drop-shadow(0 0 5px var(--neon-cyan));
+  z-index: 2;
+}
+
+/* Efecto Láser de Escáner Táctico */
+.logo-scanner {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+  box-shadow: 0 0 8px var(--neon-cyan);
+  z-index: 3;
+  animation: scan-line 2s ease-in-out infinite;
+}
+
+/* El texto con jerarquía */
+.logo-text-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo-main-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  line-height: 1.2;
+}
+
+.logo-sub-text {
+  font-size: 0.58rem; /* Un pelo más pequeño para ajustar al ancho de arriba */
+  color: var(--neon-cyan);
+  letter-spacing: 2.5px;
+  opacity: 0.6;
+  font-family: 'Share Tech Mono', monospace;
+  text-shadow: 0 0 5px rgba(0, 243, 255, 0.3);
+}
+
+/* La Y como punto de inflexión (Cian) */
 .text-accent-y {
   color: var(--neon-cyan);
   position: relative;
@@ -339,21 +393,28 @@
   display: inline-block;
 }
 
-/* Símbolo de crecimiento diagonal saliendo de la Y */
-.text-accent-y::after {
-  content: '';
-  position: absolute;
-  top: -2px;
-  right: -8px;
-  width: 12px;
-  height: 2px;
-  background: var(--neon-cyan);
-  transform: rotate(-45deg); /* La diagonal hacia arriba */
-  box-shadow: 0 0 8px var(--neon-cyan);
-  animation: pulse-line 2s infinite;
+
+/* La H (Final del camino) (Rojo) */
+.text-accent-x {
+  color: var(--neon-red);
+  position: relative;
+  text-shadow: 0 0 15px var(--neon-red);
+  display: inline-block;
+}
+
+/* --- ANIMACIONES --- */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes scan-line {
+  0%, 100% { top: 0%; opacity: 0; }
+  10%, 90% { opacity: 1; }
+  50% { top: 100%; opacity: 1; }
 }
 
 @keyframes pulse-line {
-  0%, 100% { opacity: 0.5; transform: rotate(-45deg) scaleX(1); }
-  50% { opacity: 1; transform: rotate(-45deg) scaleX(1.3); }
+  0%, 100% { opacity: 0.4; transform: rotate(-45deg) scaleX(1); }
+  50% { opacity: 1; transform: rotate(-45deg) scaleX(1.4); }
 }

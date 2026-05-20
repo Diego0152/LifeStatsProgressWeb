@@ -20,11 +20,10 @@ const Register = () => {
       });
 
       if (response.ok) {
-        alert("REGISTRO EXITOSO: Identidad creada en el núcleo.");
         navigate('/login');
       } else {
         const errorMsg = await response.text();
-        alert(`ERROR EN EL REGISTRO: ${errorMsg}`);
+        console.error("Error en el registro:", errorMsg);
       }
     } catch (error) {
       console.error("Error conectando con el servidor:", error);

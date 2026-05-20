@@ -79,6 +79,34 @@
   margin-bottom: 20px;
 }
 
+.warning-icon {
+  font-size: 5rem; /* Lo hacemos bien grande e imponente */
+  color: var(--neon-red, #ff4444); /* Si no tienes la variable, usa el rojo por defecto */
+  text-shadow: 0 0 10px rgba(255, 68, 68, 0.4),
+               0 0 25px rgba(255, 68, 68, 0.2);
+  margin-bottom: 20px;
+  display: inline-block;
+  user-select: none;
+  font-family: 'Orbitron', monospace;
+  
+  /* Animación de pulso de advertencia militar */
+  animation: warningPulse 2s infinite ease-in-out;
+}
+
+@keyframes warningPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(255, 68, 68, 0.6));
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 20px rgba(255, 68, 68, 0.9));
+    opacity: 1;
+    color: #ff6666; /* Se aclara un poco en el punto álgido */
+  }
+}
+
 .btn-huge-action {
   margin-top: 40px;
   background: transparent;

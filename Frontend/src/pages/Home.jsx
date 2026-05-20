@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Home.css';
+import { useAuth } from '../data/AuthContext';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user } = useAuth(); // Obtenemos el estado de autenticación para mostrar la información del usuario
 
   return (
     <div className="home-content-wrapper">
@@ -91,9 +93,15 @@ const Home = () => {
               El tiempo es el único recurso que no puedes recuperar. No permitas que otro día pase en modo automático. 
               Establece tu primera meta y permite que el sistema comience a procesar tu transformación.
             </p>
-            <button className="btn-action-glow" onClick={() => navigate('/login')}>
-              INICIAR PROTOCOLO DE META
-            </button>
+            {user ? (
+              <button className="btn-action-glow" onClick={() => navigate('/login')}>
+                INICIAR PROTOCOLO DE META
+              </button>
+            ) : (
+              <button className="btn-action-glow" onClick={() => navigate('/login')}>
+                INICIAR PROTOCOLO DE META
+              </button>
+            )}  
           </div>
         </div>
       </section>

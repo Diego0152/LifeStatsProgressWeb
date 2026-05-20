@@ -19,7 +19,7 @@ const NavBar = () => {
         </div>
         <div className="logo-text-group">
           <span className="logo-main-text">
-            ASC<span className="text-accent-y">Y</span>DLE
+            BOY<span className="text-accent-y">D</span>_PAT<span className="text-accent-x">H</span>
           </span>
           <span className="logo-sub-text">
             ASCENSION_MIND_CORE

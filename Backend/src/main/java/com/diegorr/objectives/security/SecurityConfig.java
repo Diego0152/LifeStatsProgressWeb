@@ -41,27 +41,31 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            .cors(Customizer.withDefaults()) // Enlaza automáticamente con el bean corsConfigurationSource
             .csrf(csrf -> csrf.disable()) 
-            .cors(Customizer.withDefaults()) // Utiliza el bean corsConfigurationSource definido abajo
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("api/usuarios/**").permitAll()
+                // CORREGIDO: Se añade la barra '/' obligatoria al principio
+                .requestMatchers("/api/usuarios/**").permitAll()
                 .anyRequest().authenticated()
-            )
-            .httpBasic(Customizer.withDefaults());
-            http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            );
+            
+        // Quitamos httpBasic para que no interfiera con JWT y añadimos el filtro
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        
         return http.build();
     }
 
-    // Bean para permitir que React (puerto 5173) hable con Spring Boot
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Tu URL de React
+        
+        // CORREGIDO: Añadimos el puerto 5174 que es el que está usando tu Vite actualmente
+        configuration.setAllowedOrigins(List.of("http://localhost:5174", "http://localhost:5173")); 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Cache-Control"));
         configuration.setAllowCredentials(true);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
