@@ -1,19 +1,14 @@
 package com.diegorr.objectives.controllers;
 
-import com.diegorr.objectives.dto.BiometriaDTO;
 import com.diegorr.objectives.dto.LoginDTO;
 import com.diegorr.objectives.models.Usuario;
 import com.diegorr.objectives.repositories.UsuarioRepository;
-import com.diegorr.objectives.services.UsuarioService;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +26,6 @@ public class UsuarioController {
 
     @Autowired
     private AuthenticationManager authenticationManager; // El motor de login de Security
-
-    @Autowired
-    private UsuarioService usuarioService; // Para registrar biometría
 
     // --- REGISTRO CON ENCRIPTACIÓN ---
     @PostMapping("/register")
@@ -102,18 +94,18 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/{id}/biometria")
-    public ResponseEntity<?> updateBiometria(@PathVariable Long id, @RequestBody Map<String, Integer> body) {
-        usuarioService.registrarCronos(id, body.get("edad"));
-        return ResponseEntity.ok().body("{\"status\": \"SINCRO_OK\"}");
-    }
-
-    @PostMapping("/{id}/sincronizar-biometria")
-    public ResponseEntity<?> sincronizar(@PathVariable Long id, @RequestBody BiometriaDTO dto) {
-        usuarioService.actualizarPerfilBiometrico(id, dto);
-        return ResponseEntity.ok().body(Map.of(
-            "status", "SINCRO_COMPLETA",
-            "timestamp", System.currentTimeMillis()
-        ));
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioParcial) {
+        return usuarioRepository.findById(id)
+            .map(usuarioDb -> {
+                // Actualización directa en memoria
+                if (usuarioParcial.getEdad() != null) usuarioDb.setEdad(usuarioParcial.getEdad());
+                if (usuarioParcial.getEstadoSalud() != null) usuarioDb.setEstadoSalud(usuarioParcial.getEstadoSalud());
+                if (usuarioParcial.getNombre() != null) usuarioDb.setNombre(usuarioParcial.getNombre());
+                
+                // Persistencia
+                return ResponseEntity.ok(usuarioRepository.save(usuarioDb));
+            })
+            .orElse(ResponseEntity.notFound().build());
     }
 }

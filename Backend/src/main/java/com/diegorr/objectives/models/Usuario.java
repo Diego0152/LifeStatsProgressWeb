@@ -48,10 +48,6 @@ public class Usuario implements UserDetails {
     private Integer edad;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "etapa_vida")
-    private EstadoEdad etapaVida;
-
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoUsuario tipoUsuario = TipoUsuario.USER; // Por defecto, todos son USER
 
@@ -76,14 +72,4 @@ public class Usuario implements UserDetails {
     @Override public boolean isAccountNonLocked() { return true; }
     @Override public boolean isCredentialsNonExpired() { return true; }
     @Override public boolean isEnabled() { return true; }
-
-    public void actualizarBiometria(int edad) {
-        this.edad = edad;
-        this.etapaVida = EstadoEdad.desdeEdad(edad);
-    }
-
-    public void actualizarEstadosSalud(List<EstadoSalud> nuevosEstados) {
-        this.estadoSalud.clear();
-        this.estadoSalud.addAll(nuevosEstados);
-    }
 }

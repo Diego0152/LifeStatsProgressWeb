@@ -1,79 +1,93 @@
 import React, { useState } from 'react';
+import { useProfile } from '../data/ProfileContext';
 import '../styles/components/HealthStep.css';
 
-const HEALTH_OPTIONS = [
-  { id: 'OXIDADO', label: 'OXIDADO', desc: 'Sedentario', cat: 'FISICO' },
-  { id: 'INICIADO', label: 'INICIADO', desc: 'Activo', cat: 'FISICO' },
-  { id: 'EQUILIBRADO', label: 'EQUILIBRADO', desc: 'Saludable', cat: 'FISICO' },
-  { id: 'IMPARABLE', label: 'IMPARABLE', desc: 'Atleta', cat: 'FISICO' },
-  { id: 'ELITE', label: 'ELITE', desc: 'Fuerte', cat: 'FISICO' },
-  { id: 'HERIDO', label: 'HERIDO', desc: 'En recuperación', cat: 'FISICO' },
-  { id: 'REPOSO', label: 'REPOSO', desc: 'Retirado', cat: 'FISICO' },
-  { id: 'ZENIT', label: 'ZENIT', desc: 'Mente clara', cat: 'MENTAL' },
-  { id: 'EN_FOCO', label: 'EN_FOCO', desc: 'Flow', cat: 'MENTAL' },
-  { id: 'QUEMADO', label: 'QUEMADO', desc: 'Burnout', cat: 'MENTAL' },
-  { id: 'DIFUSO', label: 'DIFUSO', desc: 'Niebla mental', cat: 'MENTAL' },
-  { id: 'INQUEBRANTABLE', label: 'INQUEBRANTABLE', desc: 'Resiliencia', cat: 'MENTAL' }
-];
-
 const HealthStep = ({ onNext }) => {
-  const [selected, setSelected] = useState([]);
+  const { CONFIG_MATRIZ } = useProfile();
+  const [selectedIds, setSelectedIds] = useState([]);
 
-  const toggleStatus = (id) => {
-    if (selected.includes(id)) {
-      setSelected(selected.filter(i => i !== id));
-    } else {
-      setSelected([...selected, id]);
+  // Lógica para alternar selección y validar conflictos
+  const toggleStatus = (key) => {
+    // Si ya está seleccionado, lo quitamos
+    if (selectedIds.includes(key)) {
+      setSelectedIds(selectedIds.filter(i => i !== key));
+      return;
     }
+
+    // Comprobamos conflicto contra la lista de conflictos del Contexto
+    const conflicto = CONFIG_MATRIZ.CONFLICTOS?.find(c => 
+      (c.a === key && selectedIds.includes(c.b)) || 
+      (c.b === key && selectedIds.includes(c.a))
+    );
+
+    if (conflicto) {
+      alert(`BLOQUEO_CRÍTICO: ${key} es incompatible con ${conflicto.a === key ? conflicto.b : conflicto.a}`);
+      return;
+    }
+
+    setSelectedIds([...selectedIds, key]);
   };
 
-  // Lógica de "Conflicto de Datos" para el feedback visual
-  const hasConflict = selected.includes('ELITE') && selected.includes('OXIDADO');
+  // Cálculo de estado para la UI
+  const hasConflict = CONFIG_MATRIZ.CONFLICTOS?.some(c => 
+    selectedIds.includes(c.a) && selectedIds.includes(c.b)
+  );
+
+  const allOptions = [...CONFIG_MATRIZ.salud, ...CONFIG_MATRIZ.mentales];
+  const lastSelectedOption = allOptions.find(o => o.key === selectedIds[selectedIds.length - 1]);
 
   return (
     <div className="health-step-container">
       <header className="step-header">
-        <h2 className="glitch-text">BIO_INTEGRITY_SCAN</h2>
-        <p className="system-msg">Selecciona todos los estados que definan tu situación actual.</p>
+        <h2 className="glitch-text" data-text="BIO_INTEGRITY_SCAN">BIO_INTEGRITY_SCAN</h2>
+        <p className="system-msg">Mapea los vectores de rendimiento de tu organismo.</p>
       </header>
 
-      <div className="status-sections">
-        {['FISICO', 'MENTAL'].map(category => (
-          <div key={category} className="category-group">
-            <h4 className="category-title">{category}_STATUS</h4>
-            <div className="chips-grid">
-              {HEALTH_OPTIONS.filter(opt => opt.cat === category).map(opt => (
-                <button
-                  key={opt.id}
-                  className={`status-chip ${selected.includes(opt.id) ? 'active' : ''}`}
-                  onClick={() => toggleStatus(opt.id)}
-                >
-                  <span className="chip-label">{opt.label}</span>
-                  <span className="chip-desc">{opt.desc}</span>
-                </button>
-              ))}
+      <div className="status-sections-grid">
+        {['salud', 'mentales'].map(category => (
+          <div key={category} className="category-tactical-block">
+            <h4 className="category-title-tag">// {category.toUpperCase()}_MATRICIAL</h4>
+            <div className="chips-tactical-layout">
+              {CONFIG_MATRIZ[category].map(opt => {
+                const isSelected = selectedIds.includes(opt.key);
+                return (
+                  <button
+                    key={opt.key}
+                    className={`cyber-chip-card ${isSelected ? 'selected' : ''}`}
+                    onClick={() => toggleStatus(opt.key)}
+                    style={{ 
+                      '--chip-target-color': opt.color,
+                      borderLeft: `3px solid ${opt.color}` 
+                    }}
+                  >
+                    <div className="chip-header-info">
+                      <span className="c-label">{opt.label}</span>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         ))}
       </div>
 
-      {selected.length > 0 && (
-        <div className={`scan-feedback ${hasConflict ? 'warning' : ''}`}>
-          <div className="pulse-dot"></div>
-          <span className="feedback-text">
-            {hasConflict 
-              ? "CONFLICTO_DE_DATOS: Parámetros contradictorios detectados." 
-              : `SISTEMA: ${selected.length} módulos de integridad vinculados.`}
-          </span>
-        </div>
-      )}
+      <div className={`scan-feedback-terminal ${hasConflict ? 'critical-alert' : ''}`}>
+        <div className="terminal-cursor-dot"></div>
+        <span className="feedback-stream">
+          {hasConflict 
+            ? "CRITICAL_WARNING: Conflictos detectados en matriz de rendimiento." 
+            : lastSelectedOption 
+              ? `STATUS_UPDATE › ${lastSelectedOption.label} integrado`
+              : "AWAITING_ORGANISM_SELECTION..."}
+        </span>
+      </div>
 
       <button 
-        className="btn-continue" 
-        disabled={selected.length === 0}
-        onClick={() => onNext(selected)}
+        className="btn-complete-onboarding" 
+        disabled={selectedIds.length === 0 || hasConflict}
+        onClick={() => onNext(selectedIds)}
       >
-        VINCULAR_BIO_DATA
+        VINCULAR_EXPEDIENTE_E_INICIAR
       </button>
     </div>
   );
