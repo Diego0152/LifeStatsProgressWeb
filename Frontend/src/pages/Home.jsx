@@ -94,7 +94,7 @@ const Home = () => {
               Establece tu primera meta y permite que el sistema comience a procesar tu transformación.
             </p>
             {user ? (
-              <button className="btn-action-glow" onClick={() => navigate('/login')}>
+              <button className="btn-action-glow" onClick={() => navigate('/nueva-meta')}>
                 INICIAR PROTOCOLO DE META
               </button>
             ) : (

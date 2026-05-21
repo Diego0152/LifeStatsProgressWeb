@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import AgeStep from '../../components/AgeStages.jsx';
-import HealthStep from '../../components/HealthStep.jsx';
+import AgeStep from './formMetas/AgeStages.jsx';
+import HealthStep from './formMetas/HealthStep.jsx';
 import '../../styles/metas/Metas.css';
 
 const Metas = () => {

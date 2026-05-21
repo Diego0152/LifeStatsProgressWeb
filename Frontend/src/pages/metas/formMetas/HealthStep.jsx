@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useProfile } from '../data/ProfileContext';
-import '../styles/components/HealthStep.css';
+import { useProfile } from '../../../data/ProfileContext';
+import '../../../styles/components/HealthStep.css';
 
 const HealthStep = ({ onNext }) => {
   const { CONFIG_MATRIZ } = useProfile();
@@ -39,7 +39,7 @@ const HealthStep = ({ onNext }) => {
   return (
     <div className="health-step-container">
       <header className="step-header">
-        <h2 className="glitch-text" data-text="BIO_INTEGRITY_SCAN">BIO_INTEGRITY_SCAN</h2>
+        <h2 className="text-health" data-text="BIO_INTEGRITY_SCAN">BIO_INTEGRITY_SCAN</h2>
         <p className="system-msg">Mapea los vectores de rendimiento de tu organismo.</p>
       </header>
 

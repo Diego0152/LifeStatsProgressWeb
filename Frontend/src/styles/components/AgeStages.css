@@ -1,193 +1,280 @@
-/* --- CONTENEDOR PRINCIPAL DEL ESCÁNER --- */
 .age-scanner-container {
-  background: rgba(10, 10, 15, 0.9);
-  border: 1px solid rgba(0, 243, 255, 0.15);
-  padding: 40px;
-  max-width: 650px;
-  width: 95%;
-  margin: 0 auto;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
-  font-family: 'Share Tech Mono', monospace;
-  text-align: center;
-  position: relative;
-}
-
-.scanner-header {
-  margin-bottom: 30px;
-}
-
-.scanner-header h2 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 900;
-  letter-spacing: 3px;
-  color: #fff;
-  margin: 0 0 5px 0;
-}
-
-.scanner-subtitle {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.85rem;
-  letter-spacing: 1.5px;
-}
-
-/* --- TARJETA DE AVATAR TÁCTICA --- */
-.avatar-display-card {
-  background: linear-gradient(180deg, rgba(20, 20, 30, 0.8) 0%, rgba(5, 5, 10, 0.95) 100%);
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 50px;
+  background: radial-gradient(circle at 80% 50%, #0c0c14 0%, #050508 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-top: 3px solid var(--stage-color); /* Color dinámico del backend */
-  padding: 30px;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6), 0 10px 20px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s ease;
-}
-
-.avatar-tactical-frame {
+  padding: 50px;
+  max-width: 980px;
+  margin: 50px auto;
   position: relative;
-  width: 100px;
-  height: 100px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 
+              inset 0 0 30px rgba(var(--stage-color), 0.02);
+  transition: border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.avatar-icon {
-  font-size: 3.5rem;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
-}
-
-/* Línea láser de escaneo infinito */
-.laser-beam-line {
+/* Línea Dinámica de Escaneo Láser */
+.scan-line {
   position: absolute;
+  top: 0;
   left: 0;
   width: 100%;
   height: 2px;
-  background: var(--stage-color);
-  box-shadow: 0 0 8px var(--stage-color);
-  animation: laserScan 2s linear infinite;
+  background: linear-gradient(90deg, transparent, var(--stage-color), transparent);
+  box-shadow: 0 0 12px var(--stage-color);
+  animation: tacticalScan 3.5s linear infinite;
+  opacity: 0.4;
+  z-index: 5;
+  pointer-events: none;
 }
 
-.stage-metadata {
+@keyframes tacticalScan {
+  0% { top: 0%; }
+  50% { top: 100%; }
+  100% { top: 0%; }
+}
+
+/* Cantoneras HUD de Precisión Estructural */
+.hud-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--stage-color);
+  transition: border-color 0.4s ease;
+  opacity: 0.6;
+}
+.top-left     { top: 15px; left: 15px; border-right: none; border-bottom: none; }
+.top-right    { top: 15px; right: 15px; border-left: none; border-bottom: none; }
+.bottom-left  { bottom: 15px; left: 15px; border-right: none; border-top: none; }
+.bottom-right { bottom: 15px; right: 15px; border-left: none; border-top: none; }
+
+/* --------------------------------------------------------------------------
+   LADO IZQUIERDO - CONTROLES
+   -------------------------------------------------------------------------- */
+.controls-side {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: space-between;
+  min-height: 320px;
 }
 
-.stage-sys-code {
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.4);
-  letter-spacing: 2px;
-}
-
-.stage-main-label {
+.text-age {
   font-family: 'Orbitron', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #fff;
+  font-size: 2.2rem;
+  letter-spacing: 6px;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.scanner-subtitle {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.75rem;
   letter-spacing: 2px;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-}
-
-/* --- CONTROLES DEL SLIDER DE TIEMPO --- */
-.timeline-slider-chassis {
-  margin: 35px 0;
-}
-
-.age-counter-view {
+  margin: 8px 0 0 0;
   font-family: 'Orbitron', sans-serif;
-  font-size: 3rem;
-  font-weight: 900;
-  margin-bottom: 15px;
-  transition: color 0.2s ease;
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
 }
 
-.age-counter-view .unit-label {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.4);
-  letter-spacing: 1.5px;
-  margin-left: 5px;
+/* Control Deslizante (Slider Chasis) */
+.slider-chassis {
+  margin: 40px 0;
 }
 
-/* Input Range personalizado militarizado */
 .tactical-range-slider {
   -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   height: 6px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #12121a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   outline: none;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 2px;
+  cursor: ew-resize;
 }
 
-/* El botón deslizable (Thumb) hereda el color de Java */
+/* Manejador del Slider (Webkit) */
 .tactical-range-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 24px;
-  background: var(--thumb-color);
-  border: 1px solid #000;
+  width: 18px;
+  height: 28px;
+  background: #ffffff;
+  border: 3px solid var(--stage-color);
+  box-shadow: 0 0 10px var(--stage-color);
   cursor: pointer;
-  border-radius: 1px;
-  box-shadow: 0 0 10px var(--thumb-color);
-  transition: transform 0.1s;
+  transition: transform 0.1s, background-color 0.3s;
 }
-
 .tactical-range-slider::-webkit-slider-thumb:hover {
   transform: scaleY(1.15);
+  background: var(--stage-color);
 }
 
-.timeline-markers-ticks {
+/* Manejador del Slider (Firefox) */
+.tactical-range-slider::-moz-range-thumb {
+  width: 12px;
+  height: 24px;
+  background: #ffffff;
+  border: 3px solid var(--stage-color);
+  box-shadow: 0 0 10px var(--stage-color);
+  border-radius: 0;
+  cursor: pointer;
+  transition: transform 0.1s, background-color 0.3s;
+}
+.tactical-range-slider::-moz-range-thumb:hover {
+  transform: scaleY(1.15);
+  background: var(--stage-color);
+}
+
+/* Nodos e Indicadores de Escala */
+.slider-markers {
   display: flex;
   justify-content: space-between;
-  margin-top: 12px;
-  color: rgba(255, 255, 255, 0.25);
-  font-size: 0.75rem;
-  padding: 0 5px;
+  margin-top: 15px;
+  position: relative;
 }
 
-/* --- BOTÓN DE CONFIRMACIÓN --- */
+.marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.marker-node {
+  width: 4px;
+  height: 4px;
+  background: #252530;
+  margin-bottom: 8px;
+  transition: background-color 0.4s, transform 0.3s;
+}
+
+.marker-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.25);
+  transition: color 0.4s, text-shadow 0.4s;
+}
+
+/* Estados Dinámicos de los Nodos */
+.marker.passed .marker-node {
+  background: var(--stage-color);
+}
+.marker.current .marker-node {
+  transform: scale(2);
+  background: #ffffff;
+  box-shadow: 0 0 8px var(--stage-color);
+}
+.marker.current .marker-value {
+  color: #ffffff;
+  text-shadow: 0 0 8px var(--stage-color);
+  font-weight: bold;
+}
+
+/* Botón de Acción Principal */
 .btn-tactical-confirm {
   width: 100%;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  font-family: 'Share Tech Mono', monospace;
+  border: 1px solid var(--stage-color);
+  padding: 22px;
+  font-family: 'Orbitron', sans-serif;
+  color: var(--stage-color);
   font-size: 1.1rem;
-  font-weight: bold;
-  padding: 15px;
+  letter-spacing: 4px;
   cursor: pointer;
-  letter-spacing: 2px;
-  transition: all 0.2s ease-in-out;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: inset 0 0 0 rgba(var(--stage-color), 0);
 }
 
 .btn-tactical-confirm:hover {
-  background: #fff;
-  color: #0a0a0f;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  background: var(--stage-color);
+  color: #050508;
+  box-shadow: 0 0 25px var(--stage-color), 
+              inset 0 0 10px rgba(255, 255, 255, 0.5);
+  font-weight: 700;
 }
 
-/* --- LOADER GLOBAL --- */
-.scanner-loader {
-  color: rgba(0, 243, 255, 0.8);
-  font-family: 'Share Tech Mono', monospace;
+/* --------------------------------------------------------------------------
+   LADO DERECHO - PANTALLA VISUAL HOLOGRÁFICA
+   -------------------------------------------------------------------------- */
+.visual-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px dashed rgba(255, 255, 255, 0.08);
+  padding-left: 50px;
+  position: relative;
+}
+
+/* Contenedor del Avatar y Foco de Brillo Trasero */
+.avatar-frame {
+  position: relative;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-icon {
+  font-size: 6.5rem;
+  z-index: 2;
+  filter: drop-shadow(0 0 15px var(--stage-color));
+  transition: filter 0.4s ease;
+  animation: avatarFloat 4s ease-in-out infinite;
+}
+
+/* Proyección de Luz Ambiental Trasera */
+.avatar-frame::before {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  background: var(--stage-color);
+  filter: blur(55px);
+  opacity: 0.18;
+  z-index: 1;
+  transition: background-color 0.6s ease;
+  pointer-events: none;
+}
+
+@keyframes avatarFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Despliegue Crítico del Contador Numérico */
+.age-counter-view {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+  margin: 10px 0;
+  display: flex;
+  align-items: baseline;
+}
+
+.age-unit {
   font-size: 1.2rem;
-  text-align: center;
-  padding: 50px;
+  color: var(--stage-color);
+  margin-left: 5px;
   letter-spacing: 2px;
+  text-shadow: 0 0 10px var(--stage-color);
 }
 
-@keyframes laserScan {
-  0% { top: 0%; opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
+/* Etiqueta de Rango / Estado */
+.status-badge {
+  background: var(--stage-color);
+  color: #050508;
+  padding: 8px 24px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  clip-path: polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%);
+  transition: background-color 0.6s ease, color 0.3s;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }

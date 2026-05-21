@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../data/AuthContext'; // Para sacar el ID del usuario
-import AgeStep from '../../components/AgeStages';
-import HealthStep from '../../components/HealthStep';
+import AgeStep from './formMetas/AgeStages';
+import HealthStep from './formMetas/HealthStep';
 import '../../styles/metas/MetasFlow.css';
 
 const MetasFlow = () => {
@@ -59,14 +59,23 @@ const MetasFlow = () => {
 
   return (
     <div className="setup-screen-xl">
-      <div className="step-indicator-bar">
-        <div className={`step-node ${location.hash !== '#estado-salud' ? 'active' : ''}`}>
-          <span className="step-num">01</span> <span className="step-tag">CRONOLOGÍA</span>
-        </div>
-        <div className="step-connector-line"></div>
-        <div className={`step-node ${location.hash === '#estado-salud' ? 'active' : ''}`}>
-          <span className="step-num">02</span> <span className="step-tag">BIO_INTEGRIDAD</span>
-        </div>
+      {/* Nodo 01: Cronología */}
+      <div className={`step-node ${location.hash !== '#estado-salud' ? 'current passed' : 'passed'}`}>
+        <div className="node-status-glow"></div>
+        <span className="step-num">01</span>
+        <span className="step-tag">CRONOLOGÍA</span>
+      </div>
+
+      {/* Conector Central: Simula transferencia de energía */}
+      <div className={`step-connector-line ${location.hash === '#estado-salud' ? 'energized' : ''}`}>
+        <div className="connector-pulse"></div>
+      </div>
+
+      {/* Nodo 02: Bio-Integridad */}
+      <div className={`step-node ${location.hash === '#estado-salud' ? 'current' : 'pending'}`}>
+        <div className="node-status-glow"></div>
+        <span className="step-num">02</span>
+        <span className="step-tag">BIO_INTEGRIDAD</span>
       </div>
       
       <div className="flow-component-wrapper">

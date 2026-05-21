@@ -48,7 +48,7 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                 // CORREGIDO: Se añade la barra '/' obligatoria al principio
-                .requestMatchers("/api/usuarios/**").permitAll()
+                .requestMatchers("/api/usuarios/login", "/api/usuarios/register").permitAll()
                 .anyRequest().authenticated()
             );
             

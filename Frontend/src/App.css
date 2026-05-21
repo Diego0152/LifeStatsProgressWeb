@@ -7,6 +7,14 @@
   --dark-bg: #0a0a0f;
   --grid-color: rgba(0, 243, 255, 0.04);
   --neon-red: #ff4444;
+  --neon-glow: 0 0 10px var(--stage-color);
+  --panel-bg: rgba(8, 8, 12, 0.85);
+  --border-glow: 0 0 20px rgba(255, 255, 255, 0.05);
+  --glitch-color: #ff003c;
+  --glitch-speed: 2s;
+  --bg-dark: #050508;
+  --accent-color: var(--stage-color, #fff);
+  --border-glow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
 * {
