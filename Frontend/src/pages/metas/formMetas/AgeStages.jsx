@@ -4,52 +4,77 @@ import "../../../styles/components/AgeStages.css";
 
 const AgeStep = ({ onNext, currentAge }) => {
   const { getEtapa, CONFIG_MATRIZ } = useProfile();
-  const [age, setAge] = useState(currentAge || 25);
-  
+  const [age, setAge] = useState(currentAge || 18);
+
   const etapa = useMemo(() => getEtapa(age), [age, getEtapa]);
+
+  const handleIncrement = (val) => {
+    setAge((prev) => Math.min(100, Math.max(14, prev + val)));
+  };
 
   return (
     <div className="age-scanner-container" style={{ '--stage-color': etapa.color }}>
-      {/* Elementos Estéticos de la Interfaz HUD */}
       <div className="hud-corner top-left"></div>
       <div className="hud-corner top-right"></div>
       <div className="hud-corner bottom-left"></div>
       <div className="hud-corner bottom-right"></div>
       <div className="scan-line"></div>
-      
-      {/* Panel Izquierdo: Entrada de Mandos */}
+
+      {/* LADO IZQUIERDO: SELECCIÓN CYBER-WHEEL */}
       <div className="controls-side">
         <header className="scanner-header">
-          <h1 className="text-age">BIOMETRIC_SYNC</h1>
-          <p className="scanner-subtitle">CALIBRACIÓN DE NODO TEMPORAL ACTIVA</p>
+          <h1 className="text-age">AGE_SYNCRONIZE</h1>
+          <p className="scanner-subtitle">ESCOGE TU EDAD:</p>
         </header>
 
-        <div className="slider-chassis">
-          <input 
-            type="range" 
-            min="14" 
-            max="100" 
-            value={age} 
-            onChange={(e) => setAge(parseInt(e.target.value))} 
-            className="tactical-range-slider"
-          />
+        {/* Nodos de Acceso Rápido por Etapas */}
+        <div className="quick-nodes-bar">
+          {CONFIG_MATRIZ.etapasEdad.map((e) => (
+            <button
+              key={e.key}
+              type="button"
+              className={`node-chip ${age >= e.min && age <= e.max ? 'active' : ''}`}
+              onClick={() => setAge(e.min)}
+            >
+              {e.min}
+            </button>
+          ))}
+        </div>
 
-          <div className="slider-markers">
-            {CONFIG_MATRIZ.etapasEdad.map((e) => (
-              <div 
-                key={e.key} 
-                className={`marker ${age >= e.min && age <= e.max ? 'current' : ''} ${age >= e.min ? 'passed' : ''}`} 
-                onClick={() => setAge(e.min)}
-              >
-                <span className="marker-node"></span>
-                <span className="marker-value">{e.min}</span>
-              </div>
-            ))}
-            <div className={`marker ${age === 100 ? 'current passed' : ''}`} onClick={() => setAge(100)}>
-              <span className="marker-node"></span>
-              <span className="marker-value">100</span>
+        {/* Control Rueda/Ajuste de Edad */}
+        <div className="wheel-control-chassis">
+          <button 
+            type="button" 
+            className="btn-step-adjust" 
+            onClick={() => handleIncrement(-1)}
+          >
+            -
+          </button>
+
+          <div className="wheel-display-frame">
+            {age > 14 ? (
+              <span className="wheel-sub-number">{age - 1}</span>
+            ) : (
+              <span className="wheel-sub-number hidden-slot"></span>
+            )}
+            <div className="wheel-active-number">
+              <span>{age}</span>
+              <small className="wheel-unit">AÑOS</small>
             </div>
+            {age < 100 ? (
+              <span className="wheel-sub-number">{age + 1}</span>
+            ) : (
+              <span className="wheel-sub-number hidden-slot"></span>
+            )}
           </div>
+
+          <button 
+            type="button" 
+            className="btn-step-adjust" 
+            onClick={() => handleIncrement(1)}
+          >
+            +
+          </button>
         </div>
 
         <div className="action-chassis">
@@ -59,7 +84,7 @@ const AgeStep = ({ onNext, currentAge }) => {
         </div>
       </div>
 
-      {/* Panel Derecho: Monitor de Datos Holográfico */}
+      {/* LADO DERECHO: MONITOR HOLOGRÁFICO */}
       <div className="visual-side">
         <div className="avatar-frame">
           <span className="avatar-icon">{etapa.icon}</span>

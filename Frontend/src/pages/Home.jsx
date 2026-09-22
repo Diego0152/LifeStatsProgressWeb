@@ -20,7 +20,7 @@ const Home = () => {
         <div className="hero-manifesto-expanded">
           <p className="hero-description">
             La mayoría de las personas operan bajo un software obsoleto, aceptando la mediocridad como su estado base. 
-            <strong> Objective_OS</strong> no es una simple aplicación; es el parche de rendimiento para tu hardware biológico. 
+            <strong>Boyd_Path</strong> no es una simple aplicación; es el parche de rendimiento para tu hardware biológico. 
             Hemos fusionado la psicología de vanguardia con la disciplina de grado militar para crear un entorno donde 
             el fracaso no es una opción, sino un error de sistema que vamos a corregir juntos.
           </p>
