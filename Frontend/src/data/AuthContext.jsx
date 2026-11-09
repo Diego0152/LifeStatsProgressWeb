@@ -3,7 +3,10 @@ import { createContext, useState, useContext } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
   const loginAction = async (credentials) => {
     // Limpiamos cualquier rastro anterior por si acaso
@@ -20,11 +23,13 @@ export const AuthProvider = ({ children }) => {
 
     if (response.ok) {
       const data = await response.json();
+      console.log("Respuesta real del Backend en Login:", data);
       // Guardamos el usuario con la contraseña que escribió (la necesitaremos para el logout después)
-      const userWithPass = { ...data, contrasenna: credentials.contrasenna };
-      setUser(userWithPass);
-      localStorage.setItem("user", JSON.stringify(userWithPass));
-      return userWithPass;
+      const userData = { ...data, password: credentials.password };
+
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+      return userData;
     }
     
     // Si el servidor responde 401, caerá aquí

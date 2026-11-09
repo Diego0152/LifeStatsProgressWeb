@@ -10,9 +10,9 @@ import io.jsonwebtoken.Jwts;
 public class JwtService {
 
     // Esta clave debe ser secreta y compleja
-    private static final String SECRET_KEY = "TU_CLAVE_SECRETA_SUPER_SEGURA_QUE_NADIE_DEBE_CONOCER";
+    private static final String SECRET_KEY = "c3VwZXJfc2VjcmV0X2tleV9mb3Jfand0X2F1dGhlbnRpY2F0aW9uXzIwMjZfbmV3"; // Cambia esto por una clave más segura en producción
     private static final long EXPIRATION_TIME = 86400000; // 24 horas en milisegundos
-
+    
     // 1. GENERAR EL TOKEN
     public String generateToken(String username) {
         return Jwts.builder()
@@ -31,7 +31,7 @@ public class JwtService {
     // 3. VALIDAR
     public boolean isTokenValid(String token, String username) {
         String tokenUsername = extractUsername(token);
-        return (tokenUsername.equals(username) && !isTokenExpired(token));
+        return (tokenUsername.equalsIgnoreCase(username) && !isTokenExpired(token));
     }
 
     private Claims getClaims(String token) {

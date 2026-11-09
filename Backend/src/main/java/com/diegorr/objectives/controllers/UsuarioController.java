@@ -2,12 +2,15 @@ package com.diegorr.objectives.controllers;
 
 import com.diegorr.objectives.dto.LoginDTO;
 import com.diegorr.objectives.models.Usuario;
+import com.diegorr.objectives.services.JwtService;
 import com.diegorr.objectives.repositories.UsuarioRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "http://localhost:5173") 
+@CrossOrigin(origins = "*") 
 public class UsuarioController {
 
     @Autowired
@@ -26,6 +29,9 @@ public class UsuarioController {
 
     @Autowired
     private AuthenticationManager authenticationManager; // El motor de login de Security
+
+    @Autowired 
+    private JwtService jwtService; // Para generar y validar tokens JWT
 
     // --- REGISTRO CON ENCRIPTACIÓN ---
     @PostMapping("/register")
@@ -57,7 +63,19 @@ public class UsuarioController {
             usuario.setActivo(true);
             usuarioRepository.save(usuario);
 
-            return ResponseEntity.ok(usuario);
+            String token = jwtService.generateToken(usuario.getUsername());
+
+           Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("id", usuario.getId());
+            response.put("nombre", usuario.getNombre());
+            response.put("correo", usuario.getCorreo());
+            response.put("edad", usuario.getEdad());
+            response.put("estadoSalud", usuario.getEstadoSalud());
+            response.put("tipoUsuario", usuario.getTipoUsuario());
+            response.put("activo", usuario.getActivo());
+
+            return ResponseEntity.ok(response);
 
         } catch (AuthenticationException e) { // Ahora usa la de org.springframework.security.core
             return ResponseEntity.status(401).body("ACCESS_DENIED: Credenciales inválidas");

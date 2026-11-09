@@ -5,11 +5,11 @@ const ProfileContext = createContext();
 // Definimos la configuración aquí, eliminando la necesidad de pedirla al backend
 const CONFIG_MATRIZ = {
   etapasEdad: [
-    { key: 'ADOLESCENTE', label: 'Adolescente', min: 14, max: 17, color: '#d4e309', icon: '🧑' },
-    { key: 'JOVEN', label: 'Joven', min: 18, max: 25, color: '#acb800', icon: '👨' },
-    { key: 'ADULTO', label: 'Adulto', min: 26, max: 40, color: '#ddd906', icon: '👨‍🦳' },
-    { key: 'SEÑOR', label: 'Señor', min: 41, max: 65, color: '#e7e55c', icon: '👴' },
-    { key: 'ANCIANO', label: 'Anciano', min: 66, max: 130, color: '#fef49b', icon: '👵' }
+    { key: 'ADOLESCENTE', label: 'Adolescente', min: 14, max: 17, color: '#d4e309', icon: '👦' },
+    { key: 'JOVEN', label: 'Joven', min: 18, max: 25, color: '#acb800', icon: '🧑‍🦰' },
+    { key: 'ADULTO', label: 'Adulto', min: 26, max: 40, color: '#ddd906', icon: '👨‍🦰' },
+    { key: 'SEÑOR', label: 'Señor', min: 41, max: 65, color: '#e7e55c', icon: '🧑‍🦳' },
+    { key: 'ANCIANO', label: 'Anciano', min: 66, max: 100, color: '#fef49b', icon: '👴' }
   ],
   salud: [
     { key: 'INACTIVO', label: 'Inactivo', color: '#ff6b6b' },

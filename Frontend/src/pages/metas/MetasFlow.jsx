@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../data/AuthContext'; // Para sacar el ID del usuario
+import { useAuth } from '../../data/AuthContext';
 import AgeStep from './formMetas/AgeStages';
 import HealthStep from './formMetas/HealthStep';
 import '../../styles/metas/MetasFlow.css';
@@ -8,38 +8,75 @@ import '../../styles/metas/MetasFlow.css';
 const MetasFlow = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuth(); // Obtenemos el usuario autenticado
+  const { user } = useAuth();
 
-  // Almacenamiento local del progreso antes del guardado final
-  const [formData, setFormData] = useState({
-    edad: 25,
-    estadosSalud: []
+  // 1. Inicialización correcta leyendo de sessionStorage
+  const [formData, setFormData] = useState(() => {
+    const savedAge = sessionStorage.getItem('edad');
+    return {
+      edad: savedAge ? parseInt(savedAge, 10) : null,
+      estadosSalud: []
+    };
   });
 
+  const [edadConfirmada, setEdadConfirmada] = useState(() => {
+    return sessionStorage.getItem('edadConfirmada') === 'true';
+  });
+
+  // 2. Guardián de seguridad: Revisa sessionStorage para no rebotar tras el remontaje
+  useEffect(() => {
+    const estaConfirmada = sessionStorage.getItem('edadConfirmada') === 'true';
+
+    if (location.hash === '#estado-salud' && !estaConfirmada) {
+      console.warn("⚠️ Redirigiendo a #edad por falta de confirmación.");
+      navigate('/nueva-meta#edad', { replace: true });
+    }
+  }, [location.hash, navigate]);
+
   const handleAgeComplete = (selectedAge) => {
+    // Persistimos en sessionStorage ANTES de navegar
+    sessionStorage.setItem('edad', selectedAge);
+    sessionStorage.setItem('edadConfirmada', 'true');
+
     setFormData(prev => ({ ...prev, edad: selectedAge }));
-    navigate('/nueva-meta#estado-salud'); // Salto al paso 2
+    setEdadConfirmada(true);
+
+    navigate('/nueva-meta#estado-salud');
   };
 
   const handleHealthComplete = async (selectedChips) => {
-    // Estructuramos el DTO exactamente como lo espera tu BiometriaDTO de Java
-    const biometriaDTO = {
-      edad: formData.edad,
-      estadosSalud: selectedChips // Envía la lista de Strings (IDs de los Enums)
+    const userId = user?.id || user?.usuario?.id;
+
+    if (!userId) {
+      console.error("❌ No se pudo obtener el ID del usuario.");
+      return;
+    }
+
+    const edadFinal = formData.edad || parseInt(sessionStorage.getItem('edad'), 10);
+
+    const datosParciales = {
+      edad: edadFinal,
+      estadoSalud: selectedChips
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/api/usuarios/${user.id}/sincronizar-biometria`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(biometriaDTO),
+      const response = await fetch(`http://localhost:8088/api/usuarios/${userId}`, {
+        method: 'PATCH',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user?.token}`
+        },
+        body: JSON.stringify(datosParciales),
       });
 
       if (response.ok) {
-        console.log("Sincronización biométrica completada con éxito en el servidor.");
-        navigate('/metas'); // Redirección al Dashboard de Metas liberado
+        console.log("✅ Datos biométricos actualizados con éxito.");
+        // Limpiamos la memoria temporal al terminar
+        sessionStorage.removeItem('edad');
+        sessionStorage.removeItem('edadConfirmada');
+        navigate('/metas');
       } else {
-        console.error("Fallo en la respuesta del servidor al sincronizar.");
+        console.error("❌ Error al actualizar datos. Status:", response.status);
       }
     } catch (error) {
       console.error("Error de red al conectar con el servidor táctico:", error);
@@ -49,11 +86,11 @@ const MetasFlow = () => {
   const renderStep = () => {
     switch (location.hash) {
       case '#edad':
-        return <AgeStep onNext={handleAgeComplete} currentAge={formData.edad} />;
+        return <AgeStep onNext={handleAgeComplete} currentAge={formData.edad || 18} />;
       case '#estado-salud':
         return <HealthStep onNext={handleHealthComplete} />;
       default:
-        return <AgeStep onNext={handleAgeComplete} currentAge={formData.edad} />;
+        return <AgeStep onNext={handleAgeComplete} currentAge={formData.edad || 18} />;
     }
   };
 
@@ -66,7 +103,7 @@ const MetasFlow = () => {
         <span className="step-tag">CRONOLOGÍA</span>
       </div>
 
-      {/* Conector Central: Simula transferencia de energía */}
+      {/* Conector Central */}
       <div className={`step-connector-line ${location.hash === '#estado-salud' ? 'energized' : ''}`}>
         <div className="connector-pulse"></div>
       </div>

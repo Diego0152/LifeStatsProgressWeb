@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.diegorr.objectives.services.JwtService;
-import com.diegorr.objectives.services.CustomUserDetailsService; // 👈 Importamos tu servicio de usuarios
+import com.diegorr.objectives.services.CustomUserDetailsService; 
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,14 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Autowired
-    private CustomUserDetailsService userDetailsService; // 👈 Inyectamos tu cargador de BD
-
-    // 1. PUERTA DE ESCAPE: Si la ruta va a /api/usuarios/, el filtro NO SE PREGUNTA NADA MÁS
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
-        return path.startsWith("/api/usuarios/");
-    }
+    private CustomUserDetailsService userDetailsService; 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

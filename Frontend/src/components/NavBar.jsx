@@ -48,7 +48,7 @@ const NavBar = () => {
                 {user ? 'ESTADO: OPERATIVO' : 'SISTEMA: OFFLINE'}
               </span>
               <span className="user-name">
-                {user ? user.nombre.toUpperCase() : 'NO IDENTIFICADO'}
+                {user ? (user.nombre || 'AGENTE').toUpperCase() : 'NO IDENTIFICADO'}
               </span>
             </div>
             {user ? (

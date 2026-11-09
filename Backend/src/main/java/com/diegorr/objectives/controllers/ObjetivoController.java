@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/objetivos")
+@CrossOrigin(origins = "*")
 public class ObjetivoController {
 
     @Autowired

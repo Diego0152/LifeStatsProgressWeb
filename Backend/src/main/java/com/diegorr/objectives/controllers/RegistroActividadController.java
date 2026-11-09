@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/registros")
+@CrossOrigin(origins = "*")
 public class RegistroActividadController {
 
     @Autowired
