@@ -1,0 +1,127 @@
+.ninguna-meta-container {
+  position: relative;
+  width: 100%;
+  min-height: calc(80vh - 40px); /* Ocupa el alto dentro de .content-frame sin desbordar */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* Sub-etiquetas HUD posicionadas en relación al contenedor propio */
+.hud-subtag {
+  position: absolute;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: var(--neon-cyan);
+  opacity: 0.6;
+  letter-spacing: 1.5px;
+  pointer-events: none;
+}
+
+.top-left-tag { top: 10px; left: 10px; }
+.top-right-tag { top: 10px; right: 10px; }
+
+/* Icono de advertencia y efecto de pulso */
+.alert-wrapper {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.warning-icon {
+  font-size: 4.5rem;
+  color: var(--neon-red);
+  line-height: 1;
+  font-family: 'Orbitron', sans-serif;
+  user-select: none;
+  animation: warningPulse 2s infinite ease-in-out;
+}
+
+@keyframes warningPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(255, 68, 68, 0.6));
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 25px rgba(255, 68, 68, 0.9));
+    color: #ff6666;
+    opacity: 1;
+  }
+}
+
+/* Título adaptado */
+.empty-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 2px;
+  margin: 0 0 15px 0;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+}
+
+/* Descripción */
+.empty-description {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #a0a0a0;
+  max-width: 650px;
+  line-height: 1.5;
+  margin: 0 0 35px 0;
+  letter-spacing: 1px;
+}
+
+/* Botón interactivo coherente con .btn-action-glow de Home */
+.btn-huge-action {
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  padding: 16px 45px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+  text-transform: uppercase;
+}
+
+.btn-huge-action:hover {
+  background: var(--neon-cyan);
+  color: #000000;
+  box-shadow: 0 0 35px var(--neon-cyan);
+  transform: scale(1.03);
+}
+
+/* Consola militar inferior */
+.terminal-logs-box {
+  margin-top: 40px;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.6);
+  border-left: 3px solid var(--neon-red);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.motivational-code {
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #718096;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.log-prefix {
+  color: var(--neon-red);
+  font-weight: bold;
+}

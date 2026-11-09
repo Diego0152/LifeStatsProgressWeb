@@ -1,0 +1,135 @@
+.metas-dashboard-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Header del Dashboard */
+.dashboard-header-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.glitch-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 2.5px;
+}
+
+.cursor-blink {
+  color: #00f0ff;
+  animation: blink 1s infinite;
+}
+
+/* Grid de tarjetas tácticas */
+.metas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.meta-card-tactical {
+  position: relative;
+  background: rgba(8, 14, 26, 0.7);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.meta-card-tactical:hover {
+  border-color: #00f0ff;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+  transform: translateY(-3px);
+}
+
+.card-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: #00f0ff;
+  letter-spacing: 1px;
+  margin-bottom: 0.8rem;
+}
+
+.meta-card-tactical h3 {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.meta-card-tactical p {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.4;
+  margin-bottom: 1.2rem;
+}
+
+.card-metrics {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: #00f0ff;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-top: 0.8rem;
+}
+
+/* Modal sobrepuesto (#crear) */
+.modal-overlay-boyd {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(2, 5, 12, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.boyd-modal-box {
+  width: 100%;
+  max-width: 550px;
+  background: rgba(5, 10, 20, 0.95);
+  border: 1px solid #00f0ff;
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+  padding: 2rem;
+}
+
+.modal-header-cyber {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-header-cyber h3 {
+  color: #00f0ff;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  color: #ff3b5c;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.btn-close:hover {
+  color: #ffffff;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}

@@ -49,7 +49,7 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                 // 1. Permitir peticiones de comprobación CORS del navegador
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**", "/api/metas/**").permitAll()
             
                 // 2. PERMITIR LA RAÍZ Y RUTAS PÚBLICAS (Esto quita el 403)
                 .requestMatchers("/", "/error", "/favicon.ico").permitAll()

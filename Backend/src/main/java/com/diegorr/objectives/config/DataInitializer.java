@@ -29,7 +29,7 @@ public class DataInitializer {
                 admin.setContrasenna(passwordEncoder.encode("admin123"));
                 
                 admin.setEdad(25);
-                admin.setActivo(true);
+                admin.setActivo(false);
                 admin.setTipoUsuario(TipoUsuario.USER);
                 admin.setEstadoSalud(List.of(EstadoSalud.ENERGÉTICO, EstadoSalud.EN_RECUPERACIÓN, EstadoSalud.CLARIDAD_TOTAL)); // Usa un Enum válido de tu EstadoSalud
 

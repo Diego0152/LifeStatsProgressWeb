@@ -11,6 +11,8 @@ import Config from '../../pages/Usuarios/Config.jsx';
 import ErrorPage from '../ErrorPage.jsx';
 import MetasFlow from '../../pages/metas/MetasFlow.jsx';
 import Metas from '../../pages/metas/Metas.jsx';
+import AddMetas from '../../pages/metas/AddMetas.jsx';
+import EditMetas from '../../pages/metas/EditMetas.jsx';
 
 const Content = () => {
   const location = useLocation();
@@ -31,11 +33,8 @@ const Content = () => {
           <Route path="/profile" element={
             <ProtectedRoute><Profile /></ProtectedRoute>
           } />
-          <Route path="/metas" element={
+          <Route path="/metas/*" element={
             <ProtectedRoute><Metas /></ProtectedRoute>
-          } />
-          <Route path="/nueva-meta" element={
-            <ProtectedRoute><MetasFlow /></ProtectedRoute>
           } />
           
           <Route path="*" element={<ErrorPage />} />
